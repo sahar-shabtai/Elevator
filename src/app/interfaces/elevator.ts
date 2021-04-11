@@ -3,5 +3,7 @@ export interface Elevator {
     currentFloor: number;
     previousTime:number;
     deltaTime:number;
-    numElevator:number
+    numElevator:number;
+    isMoving:boolean;
+    isArrived:boolean;
 }

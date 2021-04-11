@@ -31,6 +31,7 @@ export class MainComponent implements OnInit {
       }
     }
     this.showelev = elevatorindex+1;
+    elevatorCloset.isMoving = true;
     this.moveing(elevatorCloset,floor)
     elevatorCloset.currentFloor = floor.NumFloor;
     this.elevators[elevatorindex] = elevatorCloset;
@@ -54,10 +55,13 @@ export class MainComponent implements OnInit {
     }
     setTimeout(() => {
       floor.textbutton = 'arrived'
+      elevatorclose.isMoving = false;
+      elevatorclose.isArrived = true;
       floor.active = true;
     }, cal*100);
     setTimeout(() => {
       floor.textbutton = "Call"
+      elevatorclose.isArrived = false;
     },cal*100+2000);
   }
 
@@ -92,7 +96,9 @@ export class MainComponent implements OnInit {
         currentFloor: 10,
         previousTime: new Date().getTime(),
         deltaTime: 0,
-        numElevator: (index+1)
+        numElevator: (index+1),
+        isMoving: false,
+        isArrived: false
       }
       this.elevators.push(ele);
     }

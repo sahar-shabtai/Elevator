@@ -1,12 +1,9 @@
+body{
+   background-color: cadetblue;
+}
 .building{
     width: 92%;
     position: absolute;
-    background: #ccc26b;
-    background-image:linear-gradient(
-        transparentize(#ccc26b,.4), 
-        transparentize(#ccc26b,.4)
-    ),url("http://gdj.graphicdesignjunction.com/wp-content/uploads/2011/05/photoshop-texture-35.jpg");
-    background-size:cover,cover;
     height: 460px;
     left: 4%;
     top: 50px;
@@ -73,5 +70,8 @@ img{
     height: 30px;
 }
 .BcolorRed{
-    background-color: red !important;
+    background-color: rgba(255, 0, 0, 0.8) !important;
+}
+.Bcolorgreen{
+    background-color: #28a745 !important;
 }
