@@ -1,12 +1,13 @@
 <div class="building" >
   <div class="elevator" [ngClass]="'ele'+(i+1)" *ngFor="let ele of elevators; let i = index" [style.left.%]="(i+1)*elevatorLEFT">
-      <img src="/assets/icons8-elevator.svg" alt="elevator" >
+    <img src="/assets/icons8-elevator.svg" alt="elevator" >
   </div>
-
+   
   <div class="floors">
     <div class="floor" *ngFor="let f of floors; let i = index" >
       <div class="floor-win">
         <div class="before">{{f.name}}</div>
+        <div class="timetoarrive" [hidden]="f.active" [style.left.%]="showelev*elevatorLEFT">{{f.timeToArrive}}</div> 
         <div class="after" [ngClass]="'after'+i" >
           <button type="button" [ngClass]="{'BcolorRed':!f.active}"  class="btn btn-success call" (click)="callElevator(i,f)">{{f.textbutton}}</button>
         </div>

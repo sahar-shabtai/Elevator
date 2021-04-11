@@ -14,7 +14,7 @@ export class MainComponent implements OnInit {
   floors:Floor[] =[];
   elevators:Elevator[] = [];
   elevatorLEFT = 17;
-
+  showelev = 1; // number of elevator that text show
   constructor() { }
 
   callElevator(index, floor:Floor){
@@ -30,6 +30,7 @@ export class MainComponent implements OnInit {
         //console.log('change elevator')
       }
     }
+    this.showelev = elevatorindex+1;
     this.moveing(elevatorCloset,floor)
     elevatorCloset.currentFloor = floor.NumFloor;
     this.elevators[elevatorindex] = elevatorCloset;
@@ -37,21 +38,27 @@ export class MainComponent implements OnInit {
   }
 
   moveing(elevatorclose:Elevator,floor:Floor){
-    console.log('elevator current floor:',elevatorclose.currentFloor,'  floor:',floor.NumFloor)
     var cal =Math.abs((10*elevatorclose.currentFloor) - (10*floor.NumFloor))
+    console.log(cal)
+    floor.timeToArrive = cal/10 +"sec"
     if ((elevatorclose.currentFloor - floor.NumFloor) > 0) {
       var str = "+=" + cal + "%"
-      console.log(str)
       $(".ele"+elevatorclose.numElevator).animate({
         top: str
-      }, 1000);
+      }, cal*100);
     }else{
       var str = "-=" + cal + "%"
-      console.log(str)
       $(".ele"+elevatorclose.numElevator).animate({
         top: str
-      }, 1000);
+      }, cal*100)
     }
+    setTimeout(() => {
+      floor.textbutton = 'arrived'
+      floor.active = true;
+    }, cal*100);
+    setTimeout(() => {
+      floor.textbutton = "Call"
+    },cal*100+2000);
   }
 
   initfloors(num: number) {
@@ -62,14 +69,16 @@ export class MainComponent implements OnInit {
           name: index+"th",
           active: true,
           textbutton: 'Call',
-          NumFloor: index+1
+          NumFloor: index+1,
+          timeToArrive:'ffffffff'
         }
       }else{
         f ={
           name: "ground",
           active: true,
           textbutton: 'Call',
-          NumFloor: index+1
+          NumFloor: index+1,
+          timeToArrive:'ffffffff'
         }
       }
       this.floors.push(f)

@@ -3,4 +3,5 @@ export interface Floor {
     active: boolean;
     textbutton: string;
     NumFloor: number;
+    timeToArrive:string;
 }
