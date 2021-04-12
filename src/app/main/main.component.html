@@ -1,4 +1,5 @@
 <body>
+  <audio class="aud" src="/assets/elevator-ding-sound.mp3"></audio>
   <div class="building" >
     <div class="elevator" [ngClass]="'ele'+(i+1)" *ngFor="let ele of elevators; let i = index" [style.left.%]="(i+1)*elevatorLEFT">
       <img src="/assets/icons8-elevator.svg" alt="elevator" [ngClass]="{'BcolorRed':ele.isMoving, 'Bcolorgreen':ele.isArrived}">

@@ -55,6 +55,7 @@ export class MainComponent implements OnInit {
     }
     setTimeout(() => {
       floor.textbutton = 'arrived'
+      this.playAudio()
       elevatorclose.isMoving = false;
       elevatorclose.isArrived = true;
       floor.active = true;
@@ -63,6 +64,10 @@ export class MainComponent implements OnInit {
       floor.textbutton = "Call"
       elevatorclose.isArrived = false;
     },cal*100+2000);
+  }
+
+  playAudio(){
+    $('.aud').get(0).play();
   }
 
   initfloors(num: number) {
@@ -104,11 +109,13 @@ export class MainComponent implements OnInit {
     }
   }
 
+
   ngOnInit() {
     this.initfloors(10);
     this.initelevators(5);
     console.log(this.floors);
     console.log(this.elevators);
+    
   }
 
 }
