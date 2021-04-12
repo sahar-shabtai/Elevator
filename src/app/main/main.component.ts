@@ -15,32 +15,41 @@ export class MainComponent implements OnInit {
   elevators:Elevator[] = [];
   elevatorLEFT = 17;
   showelev = 1; // number of elevator that text show
+
   constructor() { }
 
-  callElevator(index, floor:Floor){
-    floor.active = false;
-    floor.textbutton = 'waiting'
-    // Identify closet elevator
-    let elevatorCloset:Elevator = this.elevators[0]
-    let elevatorindex = 0;
-    for (let index = 1; index < this.elevators.length; index++) {
-      if (Math.abs(elevatorCloset.currentFloor - floor.NumFloor) > Math.abs(this.elevators[index].currentFloor - floor.NumFloor)) {
-        elevatorCloset = this.elevators[index];
-        elevatorindex = index
-        //console.log('change elevator')
+  async callElevator(floor:Floor){
+    let available = this.allElevatorIsActive()
+    if (available) {
+      floor.active = false;
+      floor.textbutton = 'waiting'
+      // Identify closet elevator
+      let elevatorCloset:Elevator = this.elevators[0]
+      let elevatorindex = 0;
+      for (let index = 1; index < this.elevators.length; index++) {
+        if (Math.abs(elevatorCloset.currentFloor - floor.NumFloor) > Math.abs(this.elevators[index].currentFloor - floor.NumFloor)) {
+          elevatorCloset = this.elevators[index];
+          elevatorindex = index
+          //console.log('change elevator')
+        }
       }
+      this.showelev = elevatorindex+1;
+      elevatorCloset.isMoving = true;
+      this.moveing(elevatorCloset,floor)
+      elevatorCloset.currentFloor = floor.NumFloor;
+      this.elevators[elevatorindex] = elevatorCloset;
+      //console.log(elevatorCloset)  
+    }else{
+      console.log('enter to queue');
+      setTimeout(() => {
+        this.callElevator(floor)
+      }, 5000);
     }
-    this.showelev = elevatorindex+1;
-    elevatorCloset.isMoving = true;
-    this.moveing(elevatorCloset,floor)
-    elevatorCloset.currentFloor = floor.NumFloor;
-    this.elevators[elevatorindex] = elevatorCloset;
-    //console.log(elevatorCloset)
   }
 
   moveing(elevatorclose:Elevator,floor:Floor){
     var cal =Math.abs((10*elevatorclose.currentFloor) - (10*floor.NumFloor))
-    console.log(cal)
+    // console.log(cal)
     floor.timeToArrive = cal/10 +"sec"
     if ((elevatorclose.currentFloor - floor.NumFloor) > 0) {
       var str = "+=" + cal + "%"
@@ -66,10 +75,26 @@ export class MainComponent implements OnInit {
     },cal*100+2000);
   }
 
+  allElevatorIsActive(){
+    let available:boolean = true;
+    let counter:number = 0;
+    for (let index = 0; index < this.elevators.length; index++) {
+      if (this.elevators[index].isMoving) {
+        counter++;
+      }
+    }
+    if (counter == this.elevators.length) {
+      available =false;
+    }
+    return available;
+  }
+
+  // play sound that elevator arrived 
   playAudio(){
     $('.aud').get(0).play();
   }
 
+  // create floor 
   initfloors(num: number) {
     for (let index = 0; index < num; index++) {
       let f:Floor;
@@ -93,12 +118,12 @@ export class MainComponent implements OnInit {
       this.floors.push(f)
     }
   }
-
+  // create elevatrors
   initelevators(num:number){
     for (let index = 0; index < num; index++) {
       let ele:Elevator = {
         available: true,
-        currentFloor: 10,
+        currentFloor: 1,
         previousTime: new Date().getTime(),
         deltaTime: 0,
         numElevator: (index+1),
@@ -113,9 +138,6 @@ export class MainComponent implements OnInit {
   ngOnInit() {
     this.initfloors(10);
     this.initelevators(5);
-    console.log(this.floors);
-    console.log(this.elevators);
-    
   }
 
 }

@@ -1,12 +1,11 @@
-body{
-   background-color: cadetblue;
-}
+
 .building{
     width: 92%;
     position: absolute;
     height: 460px;
     left: 4%;
     top: 50px;
+    background-color: rgba(95, 158, 160, 0.233);
 }
 .elevator{
     position: absolute;
@@ -14,6 +13,7 @@ body{
     width: 100px;
     // left: 400px;
     height: 100%;
+    top: 93%;
 }
 
 .floors{
